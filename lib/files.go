@@ -1,7 +1,7 @@
 package lib
 
 import (
-	"gin-annotation/utils"
+	"github.com/1-st/gin-annotation/utils"
 	"go/ast"
 	"go/parser"
 	"go/token"

@@ -1,4 +1,4 @@
-module gin-annotation
+module github.com/1-st/gin-annotation
 
 go 1.15
 

@@ -2,8 +2,8 @@ package main
 
 import (
 	"fmt"
-	"gin-annotation/lib"
-	"gin-annotation/utils"
+	"github.com/1-st/gin-annotation/lib"
+	"github.com/1-st/gin-annotation/utils"
 	"os"
 )
 
