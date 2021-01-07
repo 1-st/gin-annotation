@@ -70,9 +70,9 @@ controller main.go route.entry.go(!!!new file)
 package main
 
 import (
-"gin-annotation/_example/simple/controller"
-"gin-annotation/_example/simple/middleware"
-"github.com/gin-gonic/gin"
+    "gin-annotation/_example/simple/controller"
+    "gin-annotation/_example/simple/middleware"
+    "github.com/gin-gonic/gin"
 )
 
 func Route(e *gin.Engine) {
