@@ -1,11 +1,11 @@
 # gin-annotation 
-gin-annotation is a powerful cli tool to enable gin annotation
+gin-annotation is a powerful cli tool to implement gin annotation
 
 ![image](https://raw.githubusercontent.com/1-st/logos/master/gin-annotation/logo.png)
 ## features
 * Using code generating technology by operating golang [AST](https://en.wikipedia.org/wiki/Abstract_syntax_tree)
 * Routing group
-* enable Aspect Oriented Programming for gin by middleware annotation 
+* Enable Aspect Oriented Programming for gin by middleware annotation 
 
 ## quick start
 1. Installation.
