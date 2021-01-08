@@ -8,7 +8,7 @@ import (
 /* ID user private id version 2
 [
 	method:GET,
-	group:/api/v2 /user/:name /private,
+	groups:/api/v2 /user/:name /private,
 	path:/id
 ]
 */

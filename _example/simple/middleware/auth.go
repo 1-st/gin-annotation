@@ -17,7 +17,7 @@ func Auth(ctx *gin.Context) {
 /* Log the first middleware in group /api
 [
 	id:log,
-	groups:/api@1
+	group:/api@1
 ]
 */
 func Log(ctx *gin.Context){

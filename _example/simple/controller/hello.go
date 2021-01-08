@@ -8,7 +8,7 @@ import (
 /* Hello a simple controller
 [
 	method:GET,
-	group:/api /v1,
+	groups:/api /v1,
 	path:/hello-world,
 	need:auth
 ]

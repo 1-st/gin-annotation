@@ -24,7 +24,7 @@ type HandlerFunc struct {
 type MiddlewareFunc struct {
 	RawFunc
 	ID     string
-	Groups map[string]int
+	Group map[string]int
 }
 
 type RawFunc struct {
@@ -90,17 +90,17 @@ func (f RawFunc) ParseRawFunc() Func {
 	matchMiddleware := checkExist(attr, "id")
 	if matchHandler &&
 		!matchMiddleware {
-		var group []string
+		var groups []string
 		var need []string
-		if v, ok := attr["group"]; ok {
-			group = strings.Split(v[0], " ")
+		if v, ok := attr["groups"]; ok {
+			groups = strings.Split(v[0], " ")
 		}
 		if v, ok := attr["need"]; ok {
 			need = strings.Split(v[0], " ")
 		}
 		var h HandlerFunc
 		h.RawFunc = f
-		h.GroupArray = group
+		h.GroupArray = groups
 		h.Method = attr["method"][0]
 		h.RelativePath = attr["path"][0]
 		h.Need = need
@@ -109,16 +109,16 @@ func (f RawFunc) ParseRawFunc() Func {
 		!matchHandler {
 		var m MiddlewareFunc
 		m.RawFunc = f
-		m.Groups = make(map[string]int)
+		m.Group = make(map[string]int)
 		m.ID = attr["id"][0]
-		for _, v := range attr["groups"] {
+		for _, v := range attr["group"] {
 			ss := strings.Split(v, "@")
 			n, err := strconv.ParseInt(ss[1], 10, 64)
 			if err != nil {
 				log.Print("error: sortIndex is not integer", err)
 				return nil
 			}
-			m.Groups[ss[0]] = int(n)
+			m.Group[ss[0]] = int(n)
 		}
 		return m
 	} else {

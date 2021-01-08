@@ -8,8 +8,8 @@ import (
 /* Auth1 _example middleware
 [
 	id:auth1,
-	groups:/api/v1/user/:name/private@1,
-	groups:/api/v2/user/:name/private@1
+	group:/api/v1/user/:name/private@1,
+	group:/api/v2/user/:name/private@1
 ]
 */
 func Auth1(ctx *gin.Context) {
@@ -26,8 +26,8 @@ func Auth1(ctx *gin.Context) {
 /* Auth2 _example middleware
 [
 	id:auth2,
-	groups:/api/v1/user/:name/private@2,
-	groups:/api/v2/user/:name/private@2
+	group:/api/v1/user/:name/private@2,
+	group:/api/v2/user/:name/private@2
 ]
 */
 func Auth2(ctx *gin.Context) {

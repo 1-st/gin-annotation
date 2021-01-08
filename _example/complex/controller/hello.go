@@ -9,7 +9,7 @@ import (
 [
 	method:GET,
 	path:/hello-world,
-	group:/extra
+	groups:/extra
 ]
 */
 func HelloWorld(ctx *gin.Context) {

@@ -8,7 +8,7 @@ import (
 /* Age user age controller
 [
 	method:GET,
-	group:/api/v2 /user/:name,
+	groups:/api/v2 /user/:name,
 	path:/age
 ]
 */
@@ -22,7 +22,7 @@ func Age(ctx *gin.Context) {
 /* Avatar user Avatar controller
 [
 	method:GET,
-	group:/api/v2 /user/:name,
+	groups:/api/v2 /user/:name,
 	path:/avatar
 ]
 */

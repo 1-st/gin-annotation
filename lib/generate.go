@@ -171,7 +171,7 @@ func (ctx *GenContext) InitTree(mids map[string]*MiddlewareFunc, hdrs *[]Handler
 }
 
 func (ctx *GenContext) PutMiddleware(m *MiddlewareFunc) {
-	for p, w := range m.Groups {
+	for p, w := range m.Group {
 		grp := ctx.GroupPool[p]
 		if grp == nil {
 			log.Fatalf("no such group:(%s)", p)
