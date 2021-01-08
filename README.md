@@ -23,7 +23,7 @@ package controller
 /* Hello a simple controller
 [
 	method:GET,
-	group:/api,
+	groups:/api,
 	path:/hello-world,
 	need:auth
 ]
@@ -50,7 +50,7 @@ func Auth(ctx *gin.Context) {
 /* Log the first middleware in group /api
 [
 	id:log,
-	groups:/api@1
+	group:/api@1
 ]
 */
 func Log(ctx *gin.Context){
@@ -103,16 +103,16 @@ func main() {
 
 ## Annotations
 - handlers
-  - [group](#group-annotation)
+  - [groups](#groups-annotation)
   - [path](#path-annotation)
   - [method](#method-annotation)
   - [need](#need-annotation)
 - middlewares
   -  [id](#id-annotation)
-  -  [groups](#groups-annotation)
-### Group Annotation
+  -  [group](#group-annotation)
+### Groups Annotation
 ### Path Annotation
 ### Method Annotation
 ### Need Annotation
 ### Id Annotation
-### Groups Annotation
+### Group Annotation
