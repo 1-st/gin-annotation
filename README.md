@@ -1,13 +1,14 @@
 # gin-annotation 
-gin-annotation is a powerful cli tool to implement gin annotation
+gin-annotation is a powerful cli tool to implement gin annotation 
 
-![image](https://raw.githubusercontent.com/1-st/logos/master/gin-annotation/logo.png)
-## features
+ <img src="https://raw.githubusercontent.com/1-st/logos/master/gin-annotation/logo.png" width = "50%" alt="logo" align=center /> 
+ 
+## Features
 * Using code generating technology by operating golang [AST](https://en.wikipedia.org/wiki/Abstract_syntax_tree)
 * Routing group
 * Enable Aspect Oriented Programming for gin by middleware annotation 
 
-## quick start
+## Quick Start
 1. Installation.
 ```shell
 go get github.com/1-st/gin-annotation
@@ -99,3 +100,19 @@ func main() {
 	_ = e.Run("ip:port")
 }
 ```
+
+## Annotations
+- handlers
+  - [group](#group-annotation)
+  - [path](#path-annotation)
+  - [method](#method-annotation)
+  - [need](#need-annotation)
+- middlewares
+  -  [id](#id-annotation)
+  -  [groups](#groups-annotation)
+### Group Annotation
+### Path Annotation
+### Method Annotation
+### Need Annotation
+### Id Annotation
+### Groups Annotation
