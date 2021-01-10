@@ -18,3 +18,4 @@ func HelloWorld(ctx *gin.Context) {
 		"msg": "hello, world",
 	})
 }
+
