@@ -1,6 +1,9 @@
 # gin-annotation
 
-gin-annotation is a powerful cli tool to implement gin annotation
+[![License](http://img.shields.io/badge/license-mit-blue.svg?style=flat-square)](https://raw.githubusercontent.com/1-st/gin-annotation/main/LICENSE)
+[![GoDoc](http://img.shields.io/badge/go-documentation-blue.svg?style=flat-square)](https://pkg.go.dev/github.com/1-st/gin-annotation)
+
+A powerful cli tool to implement gin annotation
 
  <img src="https://raw.githubusercontent.com/1-st/logos/master/gin-annotation/logo.png" width = "50%" alt="logo" align=center /> 
 
