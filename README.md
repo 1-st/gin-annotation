@@ -2,6 +2,7 @@
 
 [![License](http://img.shields.io/badge/license-mit-blue.svg?style=flat-square)](https://raw.githubusercontent.com/1-st/gin-annotation/main/LICENSE)
 [![GoDoc](http://img.shields.io/badge/go-documentation-blue.svg?style=flat-square)](https://pkg.go.dev/github.com/1-st/gin-annotation)
+[![Go](https://github.com/1-st/gin-annotation/workflows/Go/badge.svg?branch=main)](https://github.com/1-st/annotation/actions)
 
 A powerful cli tool to implement gin annotation
 
