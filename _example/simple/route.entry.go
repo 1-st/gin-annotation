@@ -10,9 +10,9 @@
 package main
 
 import (
-	"github.com/1-st/gin-annotation/_example/simple/controller"
-	"github.com/1-st/gin-annotation/_example/simple/middleware"
 	"github.com/gin-gonic/gin"
+	"simple-demo/controller"
+	"simple-demo/middleware"
 )
 
 func Route(e *gin.Engine) {
