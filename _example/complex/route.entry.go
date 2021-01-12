@@ -22,10 +22,6 @@ func Route(e *gin.Engine) {
 	e.GET("/ping", controller.PingPong)
 	e.GET("/api/v1", api.ApiV1)
 	e.GET("/api/v2", middleware.SaveRequestIP, middleware.SaveRequestTime, api.ApiV2)
-	extra := e.Group("/extra")
-	{
-		extra.GET("/hello-world", controller.HelloWorld)
-	}
 	apiV1 := e.Group("/api/v1")
 	{
 		userName := apiV1.Group("/user/:name")
@@ -49,5 +45,9 @@ func Route(e *gin.Engine) {
 				private.GET("/id", v2.ID)
 			}
 		}
+	}
+	extra := e.Group("/extra")
+	{
+		extra.Any("/hello-world", controller.HelloWorld)
 	}
 }

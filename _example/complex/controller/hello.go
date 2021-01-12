@@ -7,7 +7,7 @@ import (
 
 /* Hello hello world controller
 [
-	method:GET,
+	method:Any,
 	path:/hello-world,
 	groups:/extra
 ]

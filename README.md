@@ -68,10 +68,10 @@ func Log(ctx *gin.Context) {
 }
 ```
 
-3. Run gin-annotation at dir: *_example/simple*:
+3. Run gin-annotation at dir: *_example/simple*: (you can specify multiple folders)
 
 ```sh
-$ gin-annotation ./controller ./middleware
+$ gin-annotation ./
 $ ls
 controller main.go route.entry.go(!!!new file)
 ```

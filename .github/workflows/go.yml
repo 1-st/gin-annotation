@@ -18,8 +18,9 @@ jobs:
       with:
         go-version: 1.15
 
-    - name: Build
-      run: go build -v ./...
-
+    - name: Install
+      run: go intall
     - name: Test
       run: go test -v ./...
+    - name: Integration Test
+      run: sh ./test_example.sh

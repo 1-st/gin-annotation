@@ -1,7 +1,9 @@
 package lib
 
 import (
+	"fmt"
 	"go/ast"
+	"go/token"
 	"log"
 	"strconv"
 	"strings"
@@ -23,7 +25,7 @@ type HandlerFunc struct {
 
 type MiddlewareFunc struct {
 	RawFunc
-	ID     string
+	ID    string
 	Group map[string]int
 }
 
@@ -49,7 +51,7 @@ func (f RawFunc) ParseRawFunc() Func {
 		}
 	}
 	if leftBracket == -1 || rightBracket == -1 {
-		log.Print("error: no [] found")
+		panic("error: no [] found")
 		return nil
 	}
 	comment := f.Comment[leftBracket+1 : rightBracket]
@@ -68,8 +70,7 @@ func (f RawFunc) ParseRawFunc() Func {
 			}
 		}
 		if len(kv) != 2 {
-			log.Print("error kv : ", kv)
-			return nil
+			panic(fmt.Sprintf("error kv : %v", kv))
 		}
 		var key = strings.ToLower(kv[0])
 		var value = strings.ToLower(kv[1])
@@ -101,7 +102,7 @@ func (f RawFunc) ParseRawFunc() Func {
 		var h HandlerFunc
 		h.RawFunc = f
 		h.GroupArray = groups
-		h.Method = attr["method"][0]
+		h.Method = formatMethod(attr["method"][0])
 		h.RelativePath = attr["path"][0]
 		h.Need = need
 		return h
@@ -122,9 +123,66 @@ func (f RawFunc) ParseRawFunc() Func {
 		}
 		return m
 	} else {
-		log.Print("error: no match FuncType")
-		return nil
+		panic("no match FuncType")
 	}
+}
+
+// TraverseRawFuncList traverses list of RawFunc and get handler list ,middleware map and imports list
+func TraverseRawFuncList(list *[]RawFunc, h *[]HandlerFunc, m map[string]*MiddlewareFunc, i map[string]bool) {
+	for _, f := range *list {
+		switch x := f.ParseRawFunc().(type) {
+		case HandlerFunc:
+			*h = append(*h, x)
+			i[x.RawFunc.PackagePath] = true
+		case MiddlewareFunc:
+			m[x.ID] = &x
+			i[x.RawFunc.PackagePath] = true
+		}
+	}
+}
+
+func (h *HandlerFunc) GenAST() *ast.ExprStmt {
+	argsList := []ast.Expr{
+		&ast.BasicLit{
+			Kind:  token.STRING,
+			Value: "\"" + h.RelativePath + "\"",
+		},
+	}
+	// middlewares
+	for _, v := range h.Middles {
+		argsList = append(argsList, &ast.SelectorExpr{
+			X: &ast.Ident{
+				Name: v.Package,
+			},
+			Sel: &ast.Ident{
+				Name: v.Signature,
+			},
+		})
+	}
+	// handlers
+	argsList = append(argsList,
+		&ast.SelectorExpr{
+			X: &ast.Ident{
+				Name: h.Package,
+			},
+			Sel: &ast.Ident{
+				Name: h.Signature,
+			},
+		})
+	stmt := ast.ExprStmt{
+		X: &ast.CallExpr{
+			Fun: &ast.SelectorExpr{
+				X: &ast.Ident{
+					Name: path2VarName(h.Group.Path), // the group where handler in
+				},
+				Sel: &ast.Ident{
+					Name: h.Method,
+				},
+			},
+			Args: argsList,
+		},
+	}
+	return &stmt
 }
 
 func funcIsController(f *ast.FuncDecl) bool {
@@ -153,4 +211,26 @@ func funcIsController(f *ast.FuncDecl) bool {
 		return false
 	}
 	return true
+}
+
+func formatMethod(str string) string {
+	low := strings.ToLower(str)
+	switch low {
+	case "get":
+		return "GET"
+	case "post":
+		return "POST"
+	case "put":
+		return "PUT"
+	case "delete":
+		return "DELETE"
+	case "options":
+		return "OPTIONS"
+	case "patch":
+		return "PATCH"
+	case "any":
+		return "Any"
+	default:
+		panic("invalid method-annotation: " + str)
+	}
 }

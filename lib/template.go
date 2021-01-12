@@ -64,3 +64,44 @@ func fileExprListAppend(f *ast.File, list *[]ast.Stmt) {
 	}
 	f.Decls[1].(*ast.FuncDecl).Body.List = *list
 }
+
+func GenAssign(path, pPath string, mids *[]MWTuple) *ast.AssignStmt {
+	args := []ast.Expr{
+		&ast.BasicLit{
+			Kind:  token.STRING,
+			Value: "\"" + path + "\"",
+		},
+	}
+	for _, v := range *mids {
+		args = append(args, &ast.SelectorExpr{
+			X: &ast.Ident{
+				Name: v.M.Package,
+			},
+			Sel: &ast.Ident{
+				Name: v.M.Signature,
+			},
+		})
+	}
+	return &ast.AssignStmt{
+		Lhs: []ast.Expr{
+			&ast.Ident{
+				Name: path2VarName(path),
+			},
+		},
+		Tok: token.DEFINE,
+		Rhs: []ast.Expr{
+			&ast.CallExpr{
+				Fun: &ast.SelectorExpr{
+					X: &ast.Ident{
+						Name: path2VarName(pPath),
+					},
+					Sel: &ast.Ident{
+						Name: "Group",
+					},
+				},
+				Args: args,
+			},
+		},
+	}
+}
+
