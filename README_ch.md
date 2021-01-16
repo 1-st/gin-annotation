@@ -4,28 +4,27 @@
 [![GoDoc](http://img.shields.io/badge/go-documentation-blue.svg?style=flat-square)](https://pkg.go.dev/github.com/1-st/gin-annotation)
 [![Go](https://github.com/1-st/gin-annotation/workflows/Go/badge.svg?branch=main)](https://github.com/1-st/gin-annotation/actions)
 
-A powerful cli tool to implement gin annotation
+一个实现gin框架注解路由的命令行工具
 
  <img src="https://raw.githubusercontent.com/1-st/logos/master/gin-annotation/logo.png" width = "50%" alt="logo" align=center /> 
 
-[Chinese Document](https://github.com/1-st/gin-annotation/blob/main/README_ch.md)
 
-## Features
+## 特性
 
-* Using code generating technology by operating golang [AST](https://en.wikipedia.org/wiki/Abstract_syntax_tree)
-* Routing group
-* Sorting middlewares through annotations
-* Non-intrusive design
+* 通过操作golang [AST](https://en.wikipedia.org/wiki/Abstract_syntax_tree) 进行代码生成
+* 组路由支持
+* 通过注解实现中间件排序
+* 非侵入式设计
 
-## Quick Start
+## 快速开始
 
-1. Installation.
+1. 安装.
 
 ```shell
 go get github.com/1-st/gin-annotation
 ```
 
-2. Write your HandlerFunc anywhere.
+2. 在任何文件编写你的handler函数.
 
 > source code files see dir: *_example/simple*
 
@@ -72,7 +71,7 @@ func Log(ctx *gin.Context) {
 }
 ```
 
-3. Run gin-annotation at the project directory (ex: *_example/simple* ; and you can specify multiple folders)
+3. 在项目目录执行gin-annotation ./: (例如: *_example/simple* ; 你可以指定多个目录)
 
 ```sh
 $ gin-annotation ./
@@ -80,10 +79,10 @@ $ ls
 controller main.go route.entry.go(!!!new file)
 ```
 
-> tips: the name of new file is decided by environment variable <font color=#ee00ee>GIN_ANNOTATION_FILE</font>
-, default is route.entry.go
+> 提示: 新文件的名字由环境变量 <font color=#ee00ee>GIN_ANNOTATION_FILE</font> 决定
+, 默认是route.entry.go
 
-4. Look at the generated routing file
+4. 查看生成的route.entry.go
 
 ```go
 package main
@@ -105,7 +104,7 @@ func Route(e *gin.Engine) {
 }
 ``` 
 
-5. The last step , call Route() at main.go
+5. 最后一步，在main函数调用Route()
 
 ```go
 package main
@@ -122,9 +121,9 @@ func main() {
 }
 ```
 
-## Annotations
+## 注解
 
-- handlers
+- handler
     - [groups](#groups-annotation)
     - [path](#path-annotation)
     - [method](#method-annotation)
@@ -132,16 +131,16 @@ func main() {
 - middlewares
     - [id](#id-annotation)
     - [group](#group-annotation)
-  
+
 - [notice](#notice)
 
 ### Groups Annotation
 
-Each groups-annotation consists of multiple groups separated by spaces.
+每个路由组之间由空格分隔开
 
 ### Path Annotation
 
-The last element of path.
+路径的最后一个元素
 
 ### Method Annotation
 
@@ -151,11 +150,11 @@ GET,POST,DELETE,PATCH,OPTIONS or ANY.
 
 > need:id1 id2,
 
-Each element of need-annotation is the id of the middleware.
+每个元素都是middleware的ID
 
 ### Id Annotation
 
-The unique id of middleware.
+middleware的唯一ID.
 
 ### Group Annotation
 
@@ -169,12 +168,12 @@ The unique id of middleware.
 */
 ```
 
-Each middleware can have multiple group-annotations,
+每个middleware可以拥有多个group-annotation,
 
-The number behind @ is the priority of middleware.
+@之后的数字是middleware在group中的优先级.
 
 ### Notice
-* Don't write extra "," in the last item of an annotation.
+* 在注解的最后注意不要加上多余的','
 ```
 /* example
 [
