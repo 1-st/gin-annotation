@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"go/ast"
 	"go/token"
-	"log"
 	"strconv"
 	"strings"
 )
@@ -36,8 +35,18 @@ type RawFunc struct {
 	Signature   string
 }
 
-// ParseRawFunc generate Func from RawFunc
-func (f RawFunc) ParseRawFunc() Func {
+type itemTable map[string][]string
+
+func (l itemTable) has(keys ...string) bool {
+	for _, v := range keys {
+		if _, ok := l[v]; !ok {
+			return false
+		}
+	}
+	return true
+}
+
+func getCommentItems(f *RawFunc) []string {
 	var (
 		leftBracket  = -1
 		rightBracket = -1
@@ -59,8 +68,48 @@ func (f RawFunc) ParseRawFunc() Func {
 	for i, v := range ss {
 		ss[i] = strings.Trim(v, "\t\n")
 	}
-	var attr = make(map[string][]string)
-	for _, v := range ss {
+	return ss
+}
+
+func newHandler(r *RawFunc, table itemTable) HandlerFunc {
+	var groups []string
+	var need []string
+	if v, ok := table["groups"]; ok {
+		groups = strings.Split(v[0], " ")
+	}
+	if v, ok := table["need"]; ok {
+		need = strings.Split(v[0], " ")
+	}
+	var h HandlerFunc
+	h.RawFunc = *r
+	h.GroupArray = groups
+	h.Method = formatMethod(table["method"][0])
+	h.RelativePath = table["path"][0]
+	h.Need = need
+	return h
+}
+
+func newMiddleware(r *RawFunc, table itemTable) MiddlewareFunc {
+	var m MiddlewareFunc
+	m.RawFunc = *r
+	m.Group = make(map[string]int)
+	m.ID = table["id"][0]
+	for _, v := range table["group"] {
+		ss := strings.Split(v, "@")
+		n, err := strconv.ParseInt(ss[1], 10, 64)
+		if err != nil {
+			panic("error: sortIndex is not integer")
+		}
+		m.Group[ss[0]] = int(n)
+	}
+	return m
+}
+
+// ParseRawFunc generate Func from RawFunc
+func (f RawFunc) ParseRawFunc() Func {
+	items := getCommentItems(&f)
+	var table = make(itemTable)
+	for _, v := range items {
 		var kv []string
 		for i := 0; i < len(v); i++ {
 			if v[i] == ':' {
@@ -69,59 +118,24 @@ func (f RawFunc) ParseRawFunc() Func {
 				break
 			}
 		}
-		if len(kv) != 2 {
+		if len(kv) < 2 {
 			panic(fmt.Sprintf("error kv : %v", kv))
 		}
 		var key = strings.ToLower(kv[0])
-		var value = strings.ToLower(kv[1])
-		if _, ok := attr[key]; !ok {
-			attr[key] = make([]string, 0)
+		var value = kv[1]
+		if _, ok := table[key]; !ok {
+			table[key] = make([]string, 0)
 		}
-		attr[key] = append(attr[key], value)
+		table[key] = append(table[key], value)
 	}
-	var checkExist = func(m map[string][]string, attrs ...string) bool {
-		for _, v := range attrs {
-			if _, ok := m[v]; !ok {
-				return false
-			}
-		}
-		return true
-	}
-	matchHandler := checkExist(attr, "method", "path")
-	matchMiddleware := checkExist(attr, "id")
-	if matchHandler &&
-		!matchMiddleware {
-		var groups []string
-		var need []string
-		if v, ok := attr["groups"]; ok {
-			groups = strings.Split(v[0], " ")
-		}
-		if v, ok := attr["need"]; ok {
-			need = strings.Split(v[0], " ")
-		}
-		var h HandlerFunc
-		h.RawFunc = f
-		h.GroupArray = groups
-		h.Method = formatMethod(attr["method"][0])
-		h.RelativePath = attr["path"][0]
-		h.Need = need
-		return h
-	} else if matchMiddleware &&
-		!matchHandler {
-		var m MiddlewareFunc
-		m.RawFunc = f
-		m.Group = make(map[string]int)
-		m.ID = attr["id"][0]
-		for _, v := range attr["group"] {
-			ss := strings.Split(v, "@")
-			n, err := strconv.ParseInt(ss[1], 10, 64)
-			if err != nil {
-				log.Print("error: sortIndex is not integer", err)
-				return nil
-			}
-			m.Group[ss[0]] = int(n)
-		}
-		return m
+	isHandler := table.has("method", "path")
+	isMiddleware := table.has("id")
+	if isHandler &&
+		!isMiddleware {
+		return newHandler(&f, table)
+	} else if isMiddleware &&
+		!isHandler {
+		return newMiddleware(&f, table)
 	} else {
 		panic("no match FuncType")
 	}
