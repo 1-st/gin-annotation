@@ -5,6 +5,7 @@ import (
 	"sort"
 )
 
+// a tuple for middleware function and weight
 type MWTuple struct {
 	M *MiddlewareFunc
 	W int

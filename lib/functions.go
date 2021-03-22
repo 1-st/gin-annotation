@@ -8,6 +8,7 @@ import (
 	"strings"
 )
 
+//the common feature of all functions
 type Func interface {
 	ParseRawFunc() Func
 }

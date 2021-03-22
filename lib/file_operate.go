@@ -12,6 +12,7 @@ import (
 	"path/filepath"
 )
 
+//load files to a tree data structure
 type FileTreeNode struct {
 	PackagePath string
 	Files       map[string]*ast.File

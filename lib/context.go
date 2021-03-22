@@ -2,6 +2,7 @@ package lib
 
 import "log"
 
+// context when generating code
 type GenContext struct {
 	Root       *GroupTree
 	MiddlePool map[string]*MiddlewareFunc

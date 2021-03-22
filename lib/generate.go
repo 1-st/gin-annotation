@@ -2,6 +2,7 @@ package lib
 
 import "strings"
 
+// entry function
 // Generate the entry function of project
 func Generate(dirList ...string) {
 	var root = NewEmptyFileTree()
